@@ -14,5 +14,13 @@ public class Tutorial {
 		System.out.println(num);
 		System.out.println(name);
 
+		//문자열 반복
+		System.out.println(repeat(name, 2)); //KimSungHyunKimSungHyun
+		System.out.println(repeat("=", 10)); //==========
+
 	}
+
+	public static String repeat(String str, int times) {
+        	return new String(new char[times]).replace("\0", str);
+    	}
 }
