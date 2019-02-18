@@ -103,7 +103,8 @@ for j in range(startNum, scoreSize, 1):
         firstNum += 1
 
 
-numbers = [-7,4,-3,6,3,-8,3,4,]
+numbers = [-7,4,-3,6,3,-8,3,4]
+#numbers = [-7,4,-3,6]
 
 numberSize = len(numbers)
 maxSum = 0
@@ -114,5 +115,45 @@ for i in range(0,numberSize):
             pSum += numbers[k]
         if pSum > maxSum:
             maxSum = pSum
-print(maxSum)
+#print(maxSum)
+
+#재귀호출 
+def findMaxSum(numArr, start, end):
+    if start == end:
+        return numArr[start]
+
+    mid = (start+end)/2
+    print(start)
+    print(end)
+    print(mid)
+    
+    leftMaxSum = -27810394
+    numSum = 0
+    for i in range(mid, start-1, -1):
+        print("leftNum :: " + str(numArr[i]))
+        numSum += numArr[i]
+        #print("leftMaxNum :: " + str(leftMaxSum))
+        print("numSum :: " + str(numSum))
+        leftMaxSum = max(leftMaxSum, numSum)
+        print("leftMaxSum ::" + str(leftMaxSum))
+
+    rightMaxSum = -27810394
+    numSum = 0
+    for j in range(mid+1, end+1):
+        numSum += numArr[j]
+        print("rightNum :: " + str(numArr[j]))
+        #print("rightMaxNum :: " + str(rightMaxSum))
+        print("numSum :: " + str(numSum))
+        rightMaxSum = max(rightMaxSum, numSum)
+        print("rightMaxSum ::" + str(rightMaxSum))
+
+    #print("fun::" + str(findMaxSum(numArr, start, mid)))
+    #return max(findMaxSum(numArr, start, mid), 0)
+    findMaxSum(numArr, mid+1, end)
+    singleSum = max(findMaxSum(numArr, start, mid), findMaxSum(numArr, mid+1, end))
+    print("singleSum :: " + str(singleSum))
+    return max(leftMaxSum + rightMaxSum, singleSum)
+
+print(findMaxSum(numbers,0,numberSize-1))
+
 
