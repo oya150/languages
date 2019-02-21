@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*- 
+
+"""
 #출력
 #print("Hello World!")
 
@@ -76,7 +78,7 @@ scores = [3,2,4,6,2,1,3,5,4,8,4,3]
 averSize = 3
 scoreSize = len(scores)
 startNum = averSize-1
-
+'''
 #중복루프 이용 
 for i in range(startNum, scoreSize):
     average = 0
@@ -156,4 +158,118 @@ def findMaxSum(numArr, start, end):
 
 print(findMaxSum(numbers,0,numberSize-1))
 
+'''
+- range의 다른방법, 2차배열 생성, 리스트 append 사용, bool 조건 not 
 
+팀 해본적 없는 사람끼리 2명 1개조로 구성 할 수 있는 경우의 수
+'''
+ 
+MEMBER_CNT = 4
+
+#팀 해본 적 없는 팀원을 2차배열로 선언 
+isTeamList = [[False]*4 for i in range(4)]
+isTeamList[0][1] = True
+isTeamList[0][2] = True
+isTeamList[0][3] = True
+isTeamList[1][2] = True
+isTeamList[1][3] = True
+isTeamList[2][3] = True
+
+
+def findTeam(pHasTeam):
+    #팀원번호가 작은 순서부터 차례대로 탐색 할 수 있도록 firstMember를 선언
+    firstMember = -1
+    print(pHasTeam)
+
+    #멤버 중 번호가 가장 작고 팀에 속하지 않은 팀원을 추출
+    for i in range(MEMBER_CNT):
+        if not pHasTeam[i]:
+            firstMember = i
+            print("firstMember ::" + str(firstMember))
+            break
+
+    #추출할 팀원이 더 이상 없을 경우 1번의 갯수 반환
+    if firstMember == -1:
+        return 1
+
+    totCnt = 0
+    for secondMember in range(firstMember+1, MEMBER_CNT):
+        #가장 작은 번호의 멤버와 그 다음 번호의 멤버를 조건에 대입 
+        if not pHasTeam[firstMember] and not pHasTeam[secondMember] and isTeamList[firstMember][secondMember]:
+            #조건에 맞을 경우 
+            pHasTeam[firstMember] = True
+            pHasTeam[secondMember] = True
+            print("member f :: " + str(firstMember))
+            print("member s :: " + str(secondMember))
+            #조건에 맞는 멤버를 제외하고 나머지 멤버에 대해서 재귀함수 반복 
+            totCnt += findTeam(pHasTeam)
+            pHasTeam[firstMember] = False
+            pHasTeam[secondMember] = False
+            print("totCnt  :: " + str(totCnt))
+    return totCnt
+
+
+#hasTeam 배열 
+hasTeam = []
+for i in range(4):
+    hasTeam.append(False)
+#실행 
+findTeam(hasTeam)
+"""
+boardType = [[[0 for i in range(2)] for j in range(3)] for k in range(4)]
+boardType[0] = [[0,0],[1,0],[0,1]]
+boardType[1] = [[0,0],[1,0],[1,1]]
+boardType[2] = [[0,0],[0,1],[1,1]]
+boardType[3] = [[0,0],[0,1],[-1,1]]
+
+board = [[0 for i in range(6)] for j in range(2)]
+
+def makeBoard(pBoard):
+    print(pBoard)
+    firstX = -1
+    firstY = -1
+
+    #첫번째 시작점 선택(가장 왼쪽 위로부터 시작)
+    for i in range(len(pBoard)):
+        for j in range(len(pBoard[i])):    
+            if 0 == pBoard[i][j]:
+                print("iii" + str(i))
+                print("jjj" + str(i))
+                firstX = i
+                firstY = j
+                break
+        if firstY != -1:
+            break
+    
+    print("first1X :: " + str(firstX))
+    print("first1Y :: " + str(firstY))
+    #반복문이 끝났음에도 -1일 경우 더이상 남은 칸이 없는 것으로 판단 
+    if firstX == -1:
+        return 1
+    
+    #type별로 반복 탐색 
+    for i in range(len(boardType)):
+        typeX = 0
+        typeY = 0
+        
+        isWellDone = False
+        for j in range(len(boardType[i])):
+            typeX = firstX + boardType[i][j][0]
+            typeY = firstY + boardType[i][j][1]
+            print("type X :" + str(typeX))
+            print("type Y :" + str(typeY))
+
+            if pBoard[typeY][typeX] != 0:
+                break
+            else:
+                pBoard[typeY][typeX] = 1
+                isWellDone = True
+        if isWellDone:
+            makeBoard(pBoard)
+    print(pBoard)
+
+
+#    for i in range(
+#test
+#board[0][0] = 1
+makeBoard(board)
