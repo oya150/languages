@@ -233,10 +233,8 @@ def makeBoard(pBoard):
     for i in range(len(pBoard)):
         for j in range(len(pBoard[i])):    
             if 0 == pBoard[i][j]:
-                print("iii" + str(i))
-                print("jjj" + str(i))
-                firstX = i
-                firstY = j
+                firstY = i
+                firstX = j
                 break
         if firstY != -1:
             break
@@ -251,23 +249,27 @@ def makeBoard(pBoard):
     for i in range(len(boardType)):
         typeX = 0
         typeY = 0
-        
-        isWellDone = False
-        for j in range(len(boardType[i])):
+       
+        isWellDone = True
+        for j in range(3):
             typeX = firstX + boardType[i][j][0]
             typeY = firstY + boardType[i][j][1]
             print("type X :" + str(typeX))
             print("type Y :" + str(typeY))
+            #print(pBoard[typeY][typeX])
 
-            if pBoard[typeY][typeX] != 0:
-                break
+            if typeY < 0 or typeX < 0 or typeY >= len(pBoard) or typeX >= len(pBoard[0]):
+                isWellDone = False
+            elif pBoard[typeY][typeX] > 0:
+                isWellDone = False
             else:
                 pBoard[typeY][typeX] = 1
-                isWellDone = True
-        if isWellDone:
-            makeBoard(pBoard)
-    print(pBoard)
 
+        if isWellDone:
+            print("WellDone")
+            makeBoard(pBoard)
+
+    print(pBoard)
 
 #    for i in range(
 #test
