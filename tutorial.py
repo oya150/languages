@@ -223,26 +223,40 @@ boardType[2] = [[0,0],[0,1],[1,1]]
 boardType[3] = [[0,0],[0,1],[-1,1]]
 
 board = [[0 for i in range(6)] for j in range(2)]
-board[1][0] = 1
+#board[1][0] = 1
 
 
 def set(board, typeNum, firstX, firstY, delta):
     isWellDone = True
+    if delta == -1:
+        print("=========================치우기start ============================")
     print("typeNum :: " + str(typeNum))
     for j in range(3):
         typeX = firstX + boardType[typeNum][j][0]
         typeY = firstY + boardType[typeNum][j][1]
-        print("type X :" + str(typeX))
-        print("type Y :" + str(typeY))
+        if delta != -1:
+            print("type X :" + str(typeX))
+            print("type Y :" + str(typeY))
             #print(pBoard[typeY][typeX])
 
-        board[typeY][typeX] += delta
+        '''
+        if typeY >= 0 and typeX >=0 and typeY < len(board) and typeX < len(board[0]):
+            board[typeY][typeX] += delta
+        '''
+
         if typeY < 0 or typeX < 0 or typeY >= len(board) or typeX >= len(board[0]):
             print("isWellDone 1")
             isWellDone = False
-        elif board[typeY][typeX] > 1:
-            print("isWellDone 2")
-            isWellDone = False
+        else:
+            board[typeY][typeX] += delta
+
+            if board[typeY][typeX] > 1:
+                print("isWellDone 2")
+                isWellDone = False
+    print(board[0])
+    print(board[1])
+    if delta == -1:
+        print("=========================치우기end ============================")
     return isWellDone
 
 def makeBoard(pBoard):
@@ -268,17 +282,24 @@ def makeBoard(pBoard):
     #반복문이 끝났음에도 -1일 경우 더이상 남은 칸이 없는 것으로 판단 
     if firstX == -1:
         return 1
-    
+    ret = 0  
     #type별로 반복 탐색 
-    for i in range(2):
+    for i in range(4):
+        result = False
         result =  set(pBoard, i, firstX, firstY, 1)
+        
         print(result)
-        if not result:
-            set(pBoard, i, firstX, firstY, -1)
-        print(pBoard)
+        
+        if result:
+            ret += makeBoard(pBoard)
 
-    makeBoard(pBoard)
-    print(pBoard)
+        set(pBoard, i, firstX, firstY, -1)
+
+    
+    print(pBoard[0])
+    print(pBoard[1])
+    print("ret :: " + str(ret))
+    return ret
 
 #    for i in range(
 #test
