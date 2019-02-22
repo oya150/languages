@@ -238,18 +238,15 @@ def set(board, typeNum, firstX, firstY, delta):
             print("type X :" + str(typeX))
             print("type Y :" + str(typeY))
             #print(pBoard[typeY][typeX])
-
-        '''
-        if typeY >= 0 and typeX >=0 and typeY < len(board) and typeX < len(board[0]):
-            board[typeY][typeX] += delta
-        '''
-
+        
+        #블록의 위치가 board에서 벗어나는 경우 False 반환
         if typeY < 0 or typeX < 0 or typeY >= len(board) or typeX >= len(board[0]):
             print("isWellDone 1")
             isWellDone = False
+        #delta 값(1,-1)에 따라서 블록을 채울지 삭제할지 결정
         else:
             board[typeY][typeX] += delta
-
+            #해당 자리에 이미 블록이 존재하는 경우 False 반환 
             if board[typeY][typeX] > 1:
                 print("isWellDone 2")
                 isWellDone = False
@@ -264,8 +261,11 @@ def makeBoard(pBoard):
     firstX = -1
     firstY = -1
     
-    #if len(pBoard) % 3 != 0:
-    #    return -1
+    #3개짜리 도형이기때문에 3의 배수가 아닌 경우 전부 채울 수 가 없습니다.
+    #3으로 나눠서 나머지가 0이 아닌경우는 제외 합니다.
+    if len(pBoard) % 3 != 0:
+        print("블록의 크기가 3의 배수가 아닙니다.") 
+        return -1
     
     #첫번째 시작점 선택(가장 왼쪽 위로부터 시작)
     for i in range(len(pBoard)):
@@ -277,8 +277,9 @@ def makeBoard(pBoard):
         if firstY != -1:
             break
     
-    print("first1X :: " + str(firstX))
-    print("first1Y :: " + str(firstY))
+    print("첫번째 X 좌표 :: " + str(firstX))
+    print("첫번째 Y 좌표 :: " + str(firstY))
+
     #반복문이 끝났음에도 -1일 경우 더이상 남은 칸이 없는 것으로 판단 
     if firstX == -1:
         return 1
@@ -286,13 +287,17 @@ def makeBoard(pBoard):
     #type별로 반복 탐색 
     for i in range(4):
         result = False
+
+        #해당 블록 타입이 맞지 않을 경우 False  반환 
         result =  set(pBoard, i, firstX, firstY, 1)
         
         print(result)
         
+        #해당 블록 타입이 맞을 경우 재귀함수 호출하여 오른쪽 아래 순으로 계속 탐색 
         if result:
             ret += makeBoard(pBoard)
-
+        
+        #모든 탐색이 끝났으면 탐색 이전 블록타입 삭제 
         set(pBoard, i, firstX, firstY, -1)
 
     
