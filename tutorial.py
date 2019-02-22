@@ -223,12 +223,36 @@ boardType[2] = [[0,0],[0,1],[1,1]]
 boardType[3] = [[0,0],[0,1],[-1,1]]
 
 board = [[0 for i in range(6)] for j in range(2)]
+board[1][0] = 1
+
+
+def set(board, typeNum, firstX, firstY, delta):
+    isWellDone = True
+    print("typeNum :: " + str(typeNum))
+    for j in range(3):
+        typeX = firstX + boardType[typeNum][j][0]
+        typeY = firstY + boardType[typeNum][j][1]
+        print("type X :" + str(typeX))
+        print("type Y :" + str(typeY))
+            #print(pBoard[typeY][typeX])
+
+        board[typeY][typeX] += delta
+        if typeY < 0 or typeX < 0 or typeY >= len(board) or typeX >= len(board[0]):
+            print("isWellDone 1")
+            isWellDone = False
+        elif board[typeY][typeX] > 1:
+            print("isWellDone 2")
+            isWellDone = False
+    return isWellDone
 
 def makeBoard(pBoard):
     print(pBoard)
     firstX = -1
     firstY = -1
-
+    
+    #if len(pBoard) % 3 != 0:
+    #    return -1
+    
     #첫번째 시작점 선택(가장 왼쪽 위로부터 시작)
     for i in range(len(pBoard)):
         for j in range(len(pBoard[i])):    
@@ -246,29 +270,14 @@ def makeBoard(pBoard):
         return 1
     
     #type별로 반복 탐색 
-    for i in range(len(boardType)):
-        typeX = 0
-        typeY = 0
-       
-        isWellDone = True
-        for j in range(3):
-            typeX = firstX + boardType[i][j][0]
-            typeY = firstY + boardType[i][j][1]
-            print("type X :" + str(typeX))
-            print("type Y :" + str(typeY))
-            #print(pBoard[typeY][typeX])
+    for i in range(2):
+        result =  set(pBoard, i, firstX, firstY, 1)
+        print(result)
+        if not result:
+            set(pBoard, i, firstX, firstY, -1)
+        print(pBoard)
 
-            if typeY < 0 or typeX < 0 or typeY >= len(pBoard) or typeX >= len(pBoard[0]):
-                isWellDone = False
-            elif pBoard[typeY][typeX] > 0:
-                isWellDone = False
-            else:
-                pBoard[typeY][typeX] = 1
-
-        if isWellDone:
-            print("WellDone")
-            makeBoard(pBoard)
-
+    makeBoard(pBoard)
     print(pBoard)
 
 #    for i in range(
