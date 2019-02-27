@@ -373,16 +373,16 @@ setDots(dots)
 #times = [12,12,12,12,12,12]
 
 switches = [[0,1,5],[0,1,2,5],[0,1,2,3,5]]
-def makeTime(isSwitch, times, ret):
+def makeTime(isSwitch, times, ret, clickCnt):
     
     tweleveCnt = 0
-    for i in times:
+    for i in times: ## java: Arraylist.contains(item)
         if i == 12:
             tweleveCnt+=1
 
     if tweleveCnt == len(times):
         print("complete")
-        return ret
+        return clickCnt
     
     for j in range(len(switches)):
         if isSwitch[j] == 0:
@@ -390,7 +390,7 @@ def makeTime(isSwitch, times, ret):
             print(isSwitch)
             print(times)
             print("click switch")
-            ret += 1
+            clickCnt += 1
              
             for k in switches[j]:
                 print(switches[j])
@@ -399,12 +399,16 @@ def makeTime(isSwitch, times, ret):
                 else:
                     times[k] += 3
                 print(times)
-            ret = makeTime(isSwitch, times, ret)    
+            ret = makeTime(isSwitch, times, ret, clickCnt)
+            print("ret :: " + str(ret))
             isSwitch[j] = 0
-        print(ret)
-    return ret
+        if ret > 0:
+            print(ret)
+            return ret
+
+    return -1
 
 pTimes = [3,3,6,9,12,3]
 pisSwitch = [0,0,0]
 
-makeTime(pisSwitch, pTimes, 0)
+makeTime(pisSwitch, pTimes, 0, 0)
