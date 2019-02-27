@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*- 
-
 """
 #출력
 #print("Hello World!")
@@ -21,7 +20,6 @@ mihs = ['m','a','d','e','i','n','h','e','a','v','e','n']
 alphabets = [chr(i) for i in range(97,123)]
 #print(alphabets)
 
-'''
 #정렬 라이브러리 사용
 mihs.sort() #timesort algorithm java에서는 7부터 배열정렬은 quicksort list정렬은 timesort
 
@@ -44,7 +42,6 @@ for alphabet in alphabets:
         maxAlphabet = alphabet
 
 print(maxAlphabet)
-'''
 
 #2.딕셔너리 이용(빠름빠름)
 dicMih = {}
@@ -78,7 +75,6 @@ scores = [3,2,4,6,2,1,3,5,4,8,4,3]
 averSize = 3
 scoreSize = len(scores)
 startNum = averSize-1
-'''
 #중복루프 이용 
 for i in range(startNum, scoreSize):
     average = 0
@@ -215,7 +211,7 @@ for i in range(4):
     hasTeam.append(False)
 #실행 
 findTeam(hasTeam)
-"""
+
 boardType = [[[0 for i in range(2)] for j in range(3)] for k in range(4)]
 boardType[0] = [[0,0],[1,0],[0,1]]
 boardType[1] = [[0,0],[1,0],[1,1]]
@@ -310,3 +306,105 @@ def makeBoard(pBoard):
 #test
 #board[0][0] = 1
 makeBoard(board)
+
+
+dots = [1,0,0,0]
+dists = [[0 for i in range(4)] for j in range(4)]
+dists[0][1] = 3
+dists[0][2] = 4
+dists[0][3] = 1
+dists[1][2] = 3
+dists[1][3] = 1
+dists[2][3] = 1
+
+def setDots(pDots, startDot, distSum, minDistSum):
+
+    if 0 not in dots:
+        distSum += dists[0][startDot]
+        minDistSum = min(minDistSum, distSum)
+
+        print("distSum :: " + str(distSum))
+        print("minDistSum :: " + str(minDistSum))
+        return minDistSum
+
+    ret = 0
+
+    for i in range(1, len(pDots)):
+        if pDots[i] == 0:
+            pDots[i] = 1
+            print(pDots)
+            if dists[startDot][i] ==0:
+                distSum += dists[i][startDot]
+            else:
+                distSum += dists[startDot][i]
+
+            print("distSum ::" + str(distSum))
+            print("minDistSum1 :: " + str(minDistSum))
+            print("startDot :: " + str(startDot))
+            print("endDot :: " + str(i))
+
+            minDistSum = setDots(pDots,i,distSum,minDistSum)
+            pDots[i] = 0
+            distSum -= dists[startDot][i]
+
+    print(minDistSum)
+    return minDistSum
+setDots(dots,0, 0, 38902309)
+
+
+dots = [1,0,0,0]
+
+def setDots(pDots):
+    if 0 not in dots:
+        return 1
+
+    ret = 0
+    for i in range(1, len(pDots)):
+        if pDots[i] == 0:
+            pDots[i] = 1
+            ret += setDots(pDots)
+            pDots[i] = 0
+
+        print(ret)
+    return ret
+setDots(dots)
+"""
+
+#times = [12,12,12,12,12,12]
+
+switches = [[0,1,5],[0,1,2,5],[0,1,2,3,5]]
+def makeTime(isSwitch, times, ret):
+    
+    tweleveCnt = 0
+    for i in times:
+        if i == 12:
+            tweleveCnt+=1
+
+    if tweleveCnt == len(times):
+        print("complete")
+        return ret
+    
+    for j in range(len(switches)):
+        if isSwitch[j] == 0:
+            isSwitch[j] = 1
+            print(isSwitch)
+            print(times)
+            print("click switch")
+            ret += 1
+             
+            for k in switches[j]:
+                print(switches[j])
+                if times[k] == 12:
+                    times[k] = 3
+                else:
+                    times[k] += 3
+                print(times)
+            ret = makeTime(isSwitch, times, ret)    
+            isSwitch[j] = 0
+        print(ret)
+    return ret
+
+pTimes = [3,3,6,9,12,3]
+pisSwitch = [0,0,0]
+
+makeTime(pisSwitch, pTimes, 0)
